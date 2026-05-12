@@ -5,9 +5,9 @@
 // AUTOMATICALLY DETECT ENVIRONMENT
 const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-// IMPORTANT: Replace this string with your actual Render Backend URL after you deploy it!
-// Example: 'https://complaint-system-backend.onrender.com'
-const PRODUCTION_BACKEND_URL = 'REPLACE_ME_WITH_RENDER_BACKEND_URL';
+// IMPORTANT: Replace this string with your actual Vercel Backend URL after you deploy it!
+// Example: 'https://complaint-system-backend.vercel.app'
+const PRODUCTION_BACKEND_URL = 'REPLACE_ME_WITH_VERCEL_BACKEND_URL';
 
 const API_BASE = IS_LOCAL ? 'http://localhost:5050/api' : `${PRODUCTION_BACKEND_URL}/api`;
 

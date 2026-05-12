@@ -17,6 +17,19 @@ app.use(express.json());
 
 
 
+// Database connection middleware for Serverless
+app.use(async (req, res, next) => {
+    if (process.env.VERCEL) {
+        try {
+            await connectDB();
+        } catch (err) {
+            console.error('DB connection error in middleware:', err);
+            return res.status(500).json({ error: 'Database connection failed' });
+        }
+    }
+    next();
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
@@ -28,12 +41,14 @@ app.get('/api/health', (req, res) => {
 
 
 
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running on http://localhost:${PORT}`);
-        console.log(`📁 Frontend served from: ${path.join(__dirname, '..', 'frontend')}`);
+if (!process.env.VERCEL) {
+    connectDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
+            console.log(`📁 Frontend served from: ${path.join(__dirname, '..', 'frontend')}`);
+        });
     });
-});
+}
 
 // Export for serverless environments (like Vercel)
 module.exports = app;
