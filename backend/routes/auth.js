@@ -149,7 +149,7 @@ router.post('/forgot-password', async (req, res) => {
 
         // In a standalone environment (frontend/backend bound differently), host headers can be tricky.
         // We'll hardcode local client url since this is locally run, or use req.protocol.
-        const resetUrl = `http://localhost:5050/?token=${resetToken}`;
+        const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5050'}/?token=${resetToken}`;
 
         console.log('\n=============================================');
         console.log('           PASSWORD RESET REQUEST            ');
