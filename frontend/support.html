@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Support Dashboard - Manage and resolve user complaints">
+    <title>CMS — Support Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar" id="navbar">
+            <div class="navbar-brand">
+                <span class="logo-icon">🛡️</span>
+                <span>CMS</span>
+            </div>
+            <div class="navbar-info">
+                <div class="navbar-user">
+                    <span id="nav-username"></span>
+                    <span class="role-badge" style="background:linear-gradient(135deg,#ff6b6b,#ffa726);">SUPPORT</span>
+                </div>
+                <button class="btn-logout" id="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Dashboard -->
+        <main class="dashboard">
+            <div class="dashboard-header">
+                <h2>🎧 Support Dashboard</h2>
+                <p>Manage user complaints and update their resolution status</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon total">📋</div>
+                    <div class="stat-details">
+                        <h3 id="stat-total">0</h3>
+                        <p>Total Complaints</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon open">🔴</div>
+                    <div class="stat-details">
+                        <h3 id="stat-open">0</h3>
+                        <p>Open</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon progress">🟡</div>
+                    <div class="stat-details">
+                        <h3 id="stat-progress">0</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon closed">🟢</div>
+                    <div class="stat-details">
+                        <h3 id="stat-closed">0</h3>
+                        <p>Closed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaints Management -->
+            <div class="section">
+                <div class="section-header">
+                    <h3>All Complaints</h3>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar" id="filter-bar">
+                    <button class="filter-btn active" data-filter="ALL"
+                        onclick="filterComplaints('ALL', this)">All</button>
+                    <button class="filter-btn" data-filter="OPEN" onclick="filterComplaints('OPEN', this)">🔴
+                        Open</button>
+                    <button class="filter-btn" data-filter="IN_PROGRESS"
+                        onclick="filterComplaints('IN_PROGRESS', this)">🟡 In Progress</button>
+                    <button class="filter-btn" data-filter="CLOSED" onclick="filterComplaints('CLOSED', this)">🟢
+                        Closed</button>
+                </div>
+
+                <!-- Complaints List -->
+                <div class="complaints-list" id="complaints-list">
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <p>Loading complaints...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Complaint Detail Modal -->
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal" style="max-width:600px;">
+            <div id="detail-content"></div>
+            <div style="margin-top:var(--space-lg);text-align:right;">
+                <button class="btn btn-secondary btn-sm" onclick="closeDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/support.js"></script>
+</body>
+
+</html>

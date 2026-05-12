@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="User Dashboard - View and manage your complaints">
+    <title>CMS — User Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar" id="navbar">
+            <div class="navbar-brand">
+                <span class="logo-icon">🛡️</span>
+                <span>CMS</span>
+            </div>
+            <div class="navbar-info">
+                <div class="navbar-user">
+                    <span id="nav-username"></span>
+                    <span class="role-badge">USER</span>
+                </div>
+                <button class="btn-logout" id="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Dashboard -->
+        <main class="dashboard">
+            <div class="dashboard-header">
+                <h2>👋 Welcome back, <span id="greeting-name"></span></h2>
+                <p>Manage your complaints and track their resolution status</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon total">📋</div>
+                    <div class="stat-details">
+                        <h3 id="stat-total">0</h3>
+                        <p>Total</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon open">🔴</div>
+                    <div class="stat-details">
+                        <h3 id="stat-open">0</h3>
+                        <p>Open</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon progress">🟡</div>
+                    <div class="stat-details">
+                        <h3 id="stat-progress">0</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon closed">🟢</div>
+                    <div class="stat-details">
+                        <h3 id="stat-closed">0</h3>
+                        <p>Closed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Complaint Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h3>My Complaints</h3>
+                    <button class="btn btn-primary btn-sm" id="toggle-form-btn" onclick="toggleForm()">
+                        ➕ New Complaint
+                    </button>
+                </div>
+
+                <!-- Complaint Form -->
+                <div class="complaint-form-card" id="complaint-form-card">
+                    <h3>📝 Submit a Complaint</h3>
+                    <form id="complaint-form" onsubmit="handleCreateComplaint(event)">
+                        <div class="form-group">
+                            <label for="complaint-title">Title</label>
+                            <input type="text" id="complaint-title" placeholder="Brief summary of the issue" required
+                                minlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="complaint-category">Category</label>
+                            <select id="complaint-category">
+                                <option value="General">General</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Billing">Billing</option>
+                                <option value="Service">Service</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="complaint-description">Description</label>
+                            <textarea id="complaint-description"
+                                placeholder="Describe the issue in detail (min 10 characters)" required
+                                minlength="10"></textarea>
+                        </div>
+                        <div style="display:flex;gap:0.5rem;">
+                            <button type="submit" class="btn btn-primary" id="submit-complaint-btn">Submit
+                                Complaint</button>
+                            <button type="button" class="btn btn-secondary" onclick="toggleForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar" id="filter-bar">
+                    <button class="filter-btn active" data-filter="ALL"
+                        onclick="filterComplaints('ALL', this)">All</button>
+                    <button class="filter-btn" data-filter="OPEN" onclick="filterComplaints('OPEN', this)">🔴
+                        Open</button>
+                    <button class="filter-btn" data-filter="IN_PROGRESS"
+                        onclick="filterComplaints('IN_PROGRESS', this)">🟡 In Progress</button>
+                    <button class="filter-btn" data-filter="CLOSED" onclick="filterComplaints('CLOSED', this)">🟢
+                        Closed</button>
+                </div>
+
+                <!-- Complaints List -->
+                <div class="complaints-list" id="complaints-list">
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <p>Loading complaints...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="modal-overlay" id="feedback-modal">
+        <div class="modal">
+            <h3>⭐ Submit Feedback</h3>
+            <p style="color:var(--text-secondary);margin-bottom:var(--space-lg);font-size:var(--font-size-sm);">
+                Rate your experience with the resolution of this complaint.
+            </p>
+            <form id="feedback-form" onsubmit="handleSubmitFeedback(event)">
+                <input type="hidden" id="feedback-complaint-id">
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="star-rating" id="star-rating">
+                        <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>
+                        <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                        <input type="radio" name="rating" value="3" id="star3" checked><label for="star3">★</label>
+                        <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                        <input type="radio" name="rating" value="1" id="star1"><label for="star1">★</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-comment">Comment (optional)</label>
+                    <textarea id="feedback-comment" placeholder="Share your experience..." rows="3"></textarea>
+                </div>
+                <div style="display:flex;gap:0.5rem;">
+                    <button type="submit" class="btn btn-primary" id="submit-feedback-btn">Submit Feedback</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/user.js"></script>
+</body>
+
+</html>
