@@ -7,7 +7,7 @@ const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hos
 
 // IMPORTANT: Replace this string with your actual Vercel Backend URL after you deploy it!
 // Example: 'https://complaint-system-backend.vercel.app'
-const PRODUCTION_BACKEND_URL = 'REPLACE_ME_WITH_VERCEL_BACKEND_URL';
+const PRODUCTION_BACKEND_URL = 'https://complaint-management-system-9gsbyrdnu.vercel.app';
 
 const API_BASE = IS_LOCAL ? 'http://localhost:5050/api' : `${PRODUCTION_BACKEND_URL}/api`;
 
