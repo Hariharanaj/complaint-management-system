@@ -35,9 +35,18 @@ app.get('*', (req, res) => {
     }
 });
 
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running on http://localhost:${PORT}`);
-        console.log(`📁 Frontend served from: ${path.join(__dirname, '..', 'frontend')}`);
+// Connect to DB and start server or export for Serverless
+if (process.env.VERCEL) {
+    // On Vercel, mongoose buffers requests so we just connect
+    connectDB();
+} else {
+    connectDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on http://localhost:${PORT}`);
+            console.log(`📁 Frontend served from: ${path.join(__dirname, '..', 'frontend')}`);
+        });
     });
-});
+}
+
+// Export for serverless environments (like Vercel)
+module.exports = app;
