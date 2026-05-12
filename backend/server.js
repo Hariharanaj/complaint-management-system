@@ -30,9 +30,26 @@ app.use(async (req, res, next) => {
     next();
 });
 
+// Root route - API info (Moved to top)
+app.get('/', (req, res) => {
+    console.log('Root route hit');
+    res.json({
+        message: '🚀 Complaint Management System API',
+        status: 'Running',
+        version: '1.0.1',
+        endpoints: {
+            auth: '/api/auth',
+            complaints: '/api/complaints',
+            health: '/api/health'
+        }
+    });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
+
+
 
 // Health check
 app.get('/api/health', (req, res) => {
